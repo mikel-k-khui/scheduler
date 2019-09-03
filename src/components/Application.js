@@ -37,7 +37,7 @@ export default function Application(props) {
         <nav className="sidebar__menu">
           <DayList
           days={days}
-          day={day}
+          value={day}
           setDay={setDay}
           />
         </nav>
@@ -48,6 +48,8 @@ export default function Application(props) {
         />
       </section>
       <InterviewerList
+        value={value}
+
       />
       <section className="schedule">
       </section>
