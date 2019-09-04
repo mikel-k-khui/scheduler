@@ -62,17 +62,19 @@ const appScript = appointments.map(app => {
 });
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  const [days, setDays] = useState([{id: 1,
-        name: "Monday",
-        spots: 2,
-      }]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {}
+  });
+  const setDay = day => setState(prev => Object.assign({}, prev, { day }));
+  const setDays = days => setState(prev => ({ ...prev, days}));
   
   useEffect(() => {
     axios
       .get('/api/days')
       .then(res => {
-        console.log("After get:", res.data);
+        console.log(res.data);
         setDays(res.data);
       })
       .catch(e => console.log("error:", e));
@@ -89,9 +91,9 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-          days={days}
-          value={day}
-          setDay={setDay}
+          days={state.days}
+          value={state.day}
+          onChange={setDay}
           />
         </nav>
         <img
