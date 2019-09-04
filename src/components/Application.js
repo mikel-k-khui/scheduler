@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 import "components/Application.scss";
 import DayList from "./DayList";
-import InterviewerList from "./InterviewerList";
+// import InterviewerList from "./InterviewerList";
+import Appointment from "components/Appointment";
 
 const days = [
   {
@@ -21,6 +22,61 @@ const days = [
     spots: 0,
   },
 ];
+
+const appointments = [
+  {
+    id: 1,
+    time: "8am",
+  },
+  {
+    id: 2,
+    time: "1pm",
+    interview: {
+      student: "Lydia Miller-Jones",
+      interviewer: {
+        id: 1,
+        name: "Sylvia Palmer",
+        avatar: "https://i.imgur.com/LpaY82x.png"
+      }
+    }
+  },
+  {
+    id: 3,
+    time: "1:30am",
+    interview: {
+      student: "Wanda Maximoffe",
+      interviewer: {
+        id: 2,
+        name: "Doctor Stephen Strange",
+        avatar: "https://pbs.twimg.com/profile_images/687990268268773376/ZxsrfCpr_400x400.png"
+      }
+    }
+  },
+  {
+    id: 4,
+    time: "3pm",
+  },
+  {
+    id: 5,
+    time: "5pm",
+    interview: {
+      student: "Sam Wilson",
+      interviewer: {
+        id: 3,
+        name: "Steve Rogers",
+        avatar: "https://i.imgur.com/twYrpay.jpg",
+      }
+    }
+  },
+  {
+    id: 6,
+    time: "6pm",
+  }
+];
+
+const appScript = appointments.map(app => {
+  return <Appointment key={app.id} {...app} />
+});
 
 export default function Application(props) {
   const [day, setDay] = useState("Monday");
@@ -47,11 +103,9 @@ export default function Application(props) {
           alt="Lighthouse Labs"
         />
       </section>
-      <InterviewerList
-        value={value}
-
-      />
       <section className="schedule">
+        {appScript}
+        <Appointment key="last" time="5pm" />
       </section>
     </main>
   );
