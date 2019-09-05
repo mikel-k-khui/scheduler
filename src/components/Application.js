@@ -23,7 +23,7 @@ export default function Application(props) {
   const setInterviewer = interviewers => setState(prev => ({ ...prev, interviewers}));
   let appScript = '';
 
-  //Book interview to update Database
+  //Add an interview to update Database
   function bookInterview(id, interview) {
     const appointment = {...state.appointments[id], interview: { ...interview }};
     const appointments = {...state.appointments,[id]: appointment};
@@ -36,12 +36,26 @@ export default function Application(props) {
       })
       .catch(e => console.log("Error:", e));
   }
+    //Cancel an interview to update Database
+    function cancelInterview(id) {
+      const appointment = {...state.appointments[id], interview: null };
+      const appointments = {...state.appointments,[id]: appointment};
+      console.log(id);
   
+      return axios
+        .delete(`http://localhost:8001/api/appointments/${id}`, {"interview": null} )
+        .then(res => {
+          setAppointments(appointments);
+          return Promise.resolve("EMPTY"); 
+        })
+        .catch(e => console.log("Error:", e));
+    }
+  //initial setup of in-memory data
   useEffect(() => {
     axios.all(queries.map(endPoint => axios.get(endPoint)))
       .then(axios.spread(function (daysData, appsData, intersData) {
         // console.log("Days data:", daysData.data);
-        // console.log("Appointments data:", appsData.data);
+        console.log("Appointments data:", appsData.data);
         // console.log("Interviewer data:", intersData.data);
         setDays(daysData.data);
         setAppointments(appsData.data);
@@ -51,15 +65,15 @@ export default function Application(props) {
   }, []);
 
   appScript = getAppointmentsForDay(state, state.day).map(appointment => {
-    return (<Appointment key={appointment.id} interviewers={getInterviewersForDay(state, state.day)} bookInterview={bookInterview} {...appointment} />);
+    return (<Appointment key={appointment.id} interviewers={getInterviewersForDay(state, state.day)} bookInterview={bookInterview} cancelInterview={cancelInterview}{...appointment} />);
   });
 
-  useEffect(() => {
-    appScript = getAppointmentsForDay(state, state.day).map(appointment => {
-      return (<Appointment key={appointment.id} interviewers={getInterviewersForDay(state, state.day)} bookInterview={bookInterview} {...appointment} />);
-    });
-    console.log("State updated");
-  }, [state]);
+  // useEffect(() => {
+  //   appScript = getAppointmentsForDay(state, state.day).map(appointment => {
+  //     return (<Appointment key={appointment.id} interviewers={getInterviewersForDay(state, state.day)} bookInterview={bookInterview} {...appointment} />);
+  //   });
+  //   console.log("State updated");
+  // }, [state]);
 
   return (
     <main className="layout">

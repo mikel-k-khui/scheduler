@@ -11,26 +11,37 @@ import useVisualMode from "../../hooks/useVisualMode";
 
 import "./styles.scss"
 
-const EMPTY = "EMPTY";
-const SHOW = "SHOW";
+const CONFIRM = "CONFIRM";
 const CREATE = "CREATE";
+const DELETING = "DELETING";
+const EMPTY = "EMPTY";
 const SAVING = "SAVING";
+const SHOW = "SHOW";
 
 export default function Appointment(props) {
-  const { mode, transition, back, history } = useVisualMode(props.interview ? SHOW : EMPTY);
+  const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   const CANCEL = back;
 
-  function save(name, interviewer) {
-    const interview = { student: name, interviewer};
+  /**
+ * Function to funnel the information from components
+ * @name {string} student name for appointment or null for delete.
+ * @interviewer {numeric} interviewer number or null for delete
+ */
+  function edit(name, interviewer) {
+    const interview = (interviewer && name ? { student: name, interviewer} : null);
 
-    transition(SAVING);
+    transition(interviewer && name ? SAVING : DELETING);
+
+    const call = (interviewer && name ?
+      props.bookInterview(props.id, {...interview}) : 
+      props.cancelInterview(props.id));
     
-    let status = Promise.resolve(props.bookInterview(props.id, {...interview}));
+    let status = Promise.resolve(call);
 
     status.then(value => {
-      transition(value, true, 2);
-      console.log("Finished add", mode, "in", history);
+      transition(value, true);
     });
+    console.log("Finished @edit", mode);
   };
   
   return (
@@ -38,9 +49,11 @@ export default function Appointment(props) {
       <Header
       time={props.time}
       />
-      {mode === CREATE && <Form  interviewers={props.interviewers} onSave={save} onCancel={CANCEL}/>}
+      {mode === CONFIRM && <Confirm message={"Delete the appointment?"} onCancel={CANCEL} onConfirm={edit} />}
+      {mode === CREATE && <Form  interviewers={props.interviewers} onSave={edit} onCancel={CANCEL}/>}
+      {mode === DELETING && <Status message={"Deleting"} />}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message={"Saving"} />}
-      {mode === SHOW && (<Show student={props.interview.student} interviewer={props.interview.interviewer}/>)}
+      {mode === SHOW && <Show student={props.interview.student} interviewer={props.interview.interviewer} onDelete={transition} onConfirm={CONFIRM}/>}
     </article>    );
 }
