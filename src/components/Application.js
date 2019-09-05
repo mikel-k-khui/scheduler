@@ -34,13 +34,12 @@ export default function Application(props) {
         setAppointments(appointments);
         return Promise.resolve("SHOW"); 
       })
-      .catch(e => console.log("Error:", e));
+      .catch(e => "ERROR_SAVE");
   }
     //Cancel an interview to update Database
     function cancelInterview(id) {
       const appointment = {...state.appointments[id], interview: null };
       const appointments = {...state.appointments,[id]: appointment};
-      console.log(id);
   
       return axios
         .delete(`http://localhost:8001/api/appointments/${id}`, {"interview": null} )
@@ -48,7 +47,7 @@ export default function Application(props) {
           setAppointments(appointments);
           return Promise.resolve("EMPTY"); 
         })
-        .catch(e => console.log("Error:", e));
+        .catch(e => "ERROR_DELETE");
     }
   //initial setup of in-memory data
   useEffect(() => {

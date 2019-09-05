@@ -4,16 +4,16 @@ export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
-  function transition(step, replace = false) {
-    if (history[history.length - 1] !== step) {
+  function transition(newMode, replace = false) {
+    if (history[history.length - 1] !== newMode) {
       setHistory(() => {
-        let newHistory = [...history, step];
+        let newHistory = [...history, newMode];
         if (replace) {
           newHistory = history.slice(0, history.length - 1);
-          newHistory = [...newHistory, step];
+          newHistory = [...newHistory, newMode];
           console.log("Replaced", newHistory);
         }
-        setMode(step);
+        setMode(newMode);
         console.log("transition", newHistory);
         return newHistory;
       });
