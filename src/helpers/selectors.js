@@ -24,17 +24,17 @@ export function getAppointmentsForDay(state, day) {
  * Render an array of appointments
  * @state {Object} All data in state pulled from API.
  * @seekInterview {Object} with student name and interviewer number
- * @return {Object} with interviewer information filled in
+ * @return {Object} with interview data information filled in
  */
 export function getInterview(state, seekInterview) {
-  let matched = null;
+  let matched = {};
   if (seekInterview) {
-    let interviewers = state["interviewers"];
-    if (interviewers[seekInterview["interviewer"]]) {
-        seekInterview["interviewer"] = interviewers[seekInterview["interviewer"]];
-        matched = seekInterview;
+    if (state["interviewers"][seekInterview["interviewer"]]) {
+        matched = {...seekInterview};
+        matched["interviewer"]= state["interviewers"][seekInterview["interviewer"]];
       }
     }
+    console.log("In selector:", matched)
   return matched;
 }
 

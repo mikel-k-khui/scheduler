@@ -21,6 +21,9 @@ const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
+  console.log(props.id);
+  console.log(null || props.interview);
+  // console.log(props.interview ? props.interview.interviewer.name : null);
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   const CANCEL = back;
 
@@ -33,7 +36,7 @@ export default function Appointment(props) {
   function checker(name, interviewer) {
     if (!props.interview) {
       save(name, interviewer);
-    } else if (props.interview["student"] !== name || props.interview["interviewer"] !== interviewer) {
+    } else if (props.interview["student"] !== name || props.interview["interviewer"]["id"] !== interviewer) {
       console.log("Edit:", props.name, props.interviewer, name, interviewer);
       const interview = { student: name, interviewer};
 
@@ -44,7 +47,7 @@ export default function Appointment(props) {
         .then(value => (value === SHOW) ? transition(value, true) : transition(ERROR_SAVE, true))
         .catch(e => console.log("Error:", e));
     } else {
-      console.log("No change:", props.interview.student, props.interview.interviewer, name, interviewer);
+      console.log("No change:", props.interview.student, props.interview.interviewer["id"], name, interviewer);
 
       transition(SHOW, true);
     }
