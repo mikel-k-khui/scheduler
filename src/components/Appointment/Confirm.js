@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../Button"
 
 export default function Show(props) {
-  const cancel = () => props.onConfirm(null, null);
+  const cancel = () => props.onConfirm();
   
   return (
 <main className="appointment__card appointment__card--confirm">

@@ -15,8 +15,9 @@ export default function FormData(props) {
     setName("");
     setInterviewer(null);
   };
-  
-  const save = () => props.onSave(name, interviewer);
+  const save = () => props.onSave(name || props.student, interviewer || props.interviewer);
+
+  console.log("On form - name:", name, "interviewer:", interviewer);
   
   return (
   <main className="appointment__card appointment__card--create">
@@ -24,11 +25,12 @@ export default function FormData(props) {
       <form autoComplete="off" onSubmit={event => event.preventDefault()}>
         <input
           className="appointment__create-input text--semi-bold"
-          name="name"
+          name="student name"
           type="text"
           placeholder="Enter Student Name"
-          value={name}
+          value={name || props.student}
           onChange={event => setName(event.target.value)}
+          required="required"
         />
       </form>
       <InterviewerList interviewers={props.interviewers} value={interviewer} onChange={setInterviewer} />

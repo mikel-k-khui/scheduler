@@ -22,26 +22,53 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   const CANCEL = back;
 
-  /**
- * Function to funnel the information from components
- * @name {string} student name for appointment or null for delete.
- * @interviewer {numeric} interviewer number or null for delete
- */
-  function edit(name, interviewer) {
-    const interview = (interviewer && name ? { student: name, interviewer} : null);
+    /**
+   * Function to funnel the information from components
+   * @name {string} student name for appointment or null for delete.
+   * @interviewer {numeric} interviewer number or null for delete
+   */
 
-    transition(interviewer && name ? SAVING : DELETING);
+  function checker(name, interviewer) {
+    if (!props.interview) {
+      save(name, interviewer);
+    } else if (props.interview["student"] !== name || props.interview["interviewer"] !== interviewer) {
+      console.log("Edit:", props.name, props.interviewer, name, interviewer);
+      const interview = { student: name, interviewer};
 
-    const call = (interviewer && name ?
-      props.bookInterview(props.id, {...interview}) : 
-      props.cancelInterview(props.id));
-    
-    let status = Promise.resolve(call);
+      transition(SAVING);
 
-    status.then(value => {
-      transition(value, true);
-    });
-    console.log("Finished @edit", mode);
+      let status = Promise.resolve(props.cancelInterview(props.id));
+      status
+        .then(value => (value === EMPTY) ? props.bookInterview(props.id, {...interview}) : value)
+        .then(value => (value === SHOW) ? transition(value, true) : value)
+        .catch(e => console.log("Error:", e));
+    } else {
+      console.log("No change:", props.interview.student, props.interview.interviewer, name, interviewer);
+
+      transition(SHOW, true);
+    }
+  };
+
+  function save(name, interviewer) {
+    const interview = { student: name, interviewer};
+
+    transition(SAVING);
+
+    let status = Promise.resolve(props.bookInterview(props.id, {...interview}));
+    status
+      .then(value => transition(value, true))
+      .catch(e => console.log("Error:", e));
+
+    console.log("Finished @save", name, "and", interviewer);
+  };
+
+  function cancel() {
+    transition(DELETING);
+    let status = Promise.resolve(props.cancelInterview(props.id));
+    status
+      .then(value => transition(value, true))
+      .catch(e => console.log("Error:", e));
+    console.log("Finished @edit");
   };
   
   return (
@@ -49,11 +76,12 @@ export default function Appointment(props) {
       <Header
       time={props.time}
       />
-      {mode === CONFIRM && <Confirm message={"Delete the appointment?"} onCancel={CANCEL} onConfirm={edit} />}
-      {mode === CREATE && <Form  interviewers={props.interviewers} onSave={edit} onCancel={CANCEL}/>}
+      {mode === CONFIRM && <Confirm message={"Delete the appointment?"} onCancel={CANCEL} onConfirm={cancel} />}
+      {mode === CREATE && <Form  interviewers={props.interviewers} student={props.interview ? props.interview.student : ''} interviewer={props.interview ? props.interview.interviewer : null} onSave={checker} onCancel={CANCEL}/>}
       {mode === DELETING && <Status message={"Deleting"} />}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message={"Saving"} />}
-      {mode === SHOW && <Show student={props.interview.student} interviewer={props.interview.interviewer} onDelete={transition} onConfirm={CONFIRM}/>}
+      {mode === SHOW && <Show student={props.interview.student} interviewer={props.interview.interviewer} onDelete={transition} toConfirm={CONFIRM}
+      onEdit={transition} toForm={CREATE} />}
     </article>    );
 }
