@@ -7,7 +7,7 @@
  */
 export function getAppointmentsForDay(state, day) {
   const matched = [];
-  let appArray = state.days.filter(aDay =>  aDay.name === day)
+  let appArray = state.days.filter(aDay =>  aDay.name === day);
   if (appArray.length > 0) {
     appArray = appArray[0]["appointments"]; 
     Object.keys(state.appointments).filter(app => {
@@ -35,5 +35,28 @@ export function getInterview(state, seekInterview) {
         matched = seekInterview;
       }
     }
+  return matched;
+}
+
+/**
+ * Render an array of interviewers available
+ * @state {Object} All data in state pulled from API.
+ * @day {String} currently seleted day
+ * @return [Array]
+ */
+export function getInterviewersForDay(state, day) {
+  const matched = [];
+
+  let appArray = state.days.filter(aDay =>  aDay.name === day);
+
+  if (appArray.length > 0) {
+    appArray = appArray[0]["interviewers"];
+    Object.keys(state["interviewers"]).filter(interviewer => {
+      if (appArray.includes(state["interviewers"][interviewer]["id"])) {
+        matched.push(state["interviewers"][interviewer]);
+      }
+      return matched;
+    });
+  }
   return matched;
 }
