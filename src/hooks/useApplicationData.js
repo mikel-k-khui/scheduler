@@ -8,41 +8,38 @@ const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_SPOTS = "SET_SPOTS";
 
-export default function useApplicationData(props) {
+function reducer(state, {type, ...payload}) {
+  console.log("In Reducer: adding", payload, "to", state);
+  switch (type) {
+    case SET_DAY:
+      return Object.assign({}, state, { day: payload.day});
+    case SET_APPLICATION_DATA:
+        let { ...any} = payload;
+        return Object.assign({}, state, { ...any});
+    case SET_SPOTS: 
+      let { id, change} = payload;
+      // console.log("In set spots:", id, "and change:", change);
+      // console.log("Which day to change:", state.days[Math.floor(id / 5)]);
 
-  function reducer(state, action) {
-    console.log("In Reducer", action);
-    switch (action.type) {
-      case SET_DAY:
-        return Object.assign({}, state, { day: action.day });
-      case SET_APPLICATION_DATA:
-          let { type, ...any} = action;
-          return Object.assign({}, state, { ...any});
-      case SET_SPOTS: 
-        let { id, change} = action;
-        // console.log("In set spots:", id, "and change:", change);
-        // console.log("Which day to change:", state.days[Math.floor(id / 5)]);
-
-        const pos = Math.floor(id / 5);
-        // slice(0, pos);
-        // slice(pos + 1, .length);
-        let days = [...state["days"]];
-        let day = {...days[pos]};
+      const pos = Math.floor(id / 5);
+      let days = [...state["days"]];
+      let day = {...days[pos]};
+      if (day["appointments"].includes(id)) {
         const newSpots = Number(days[pos]["spots"]) + Number(change);
         day = {...day, spots: newSpots};
-
         days = [...days.slice(0, pos), day, ...days.slice(pos+1, days.length)]; 
+        // console.log("Target change", days, "and", day, newSpots);
+      }
+      return Object.assign({}, state, { days });
 
-        console.log("Target change", days, "and", day, newSpots);
+    default:
+      throw new Error(
+        `Tried to reduce with unsupported action type: ${type}`
+      );
+  }
+};
 
-        return Object.assign({}, state, { days});
-
-      default:
-        throw new Error(
-          `Tried to reduce with unsupported action type: ${action.type}`
-        );
-    }
-  };
+export default function useApplicationData(props) {
   
   const [ state, dispatch] = useReducer(reducer, { 
     day: "Monday", days: [], appointments: {}, interviewers: {}
@@ -64,7 +61,7 @@ export default function useApplicationData(props) {
     const appointments = {...state.appointments, [id]: appointment};
 
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, {"interview": interview} )
+      .put(`http://localhost:8001/api/appointments/${id}`, {"interview": interview } )
       .then(res => {
         setAppointments(appointments);
         setSpots( id, change);

@@ -9,6 +9,7 @@ import DayList from "./DayList";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors";
 import useApplicationData from "../hooks/useApplicationData";
+import Status from "components/Appointment/Status";
 
 export default function Application(props) {
   const {
@@ -18,24 +19,32 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
   
-  console.log("Before render:", state);
-
-  let appScript = '';
+  let appScript = (<Status message={"Loading"} />);
   const interviewers = getInterviewersForDay(state, state.day);
 
   if (state["days"].length !== 0 && Object.keys(state["interviewers"]).length > 0 &&
     Object.keys(state["appointments"]).length > 0) {
-    // if (state.days && state.interviewers && state.appointments) {
-      appScript = getAppointmentsForDay(state, state.day).map(appointment => {
-        return (<Appointment key={appointment.id}
-          {...appointment}
-          interview={getInterview(state, appointment.interview)}
-          interviewers={interviewers}
-          bookInterview={bookInterview}
-          cancelInterview={cancelInterview}
-          />);
+
+      let loading = new Promise((res, rej) => {
+        setTimeout(() => res(), 30000);
+        
+        loading
+          .then(() => {
+          console.log("Before getting Appointments:", state);
+            appScript = getAppointmentsForDay(state, state.day).map(appointment => {
+              return (<Appointment key={appointment.id}
+                {...appointment}
+                interview={getInterview(state, appointment.interview)}
+                interviewers={interviewers}
+                bookInterview={bookInterview}
+                cancelInterview={cancelInterview}
+                />);
+              });
+              //end of rendering logic
+            });
         });
       }
+      //end of if statement
 
   return (
     <main className="layout">
