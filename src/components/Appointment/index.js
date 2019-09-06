@@ -21,9 +21,8 @@ const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
-  console.log(props.id);
-  console.log(props.interview);
-  // console.log(props.interview ? props.interview.interviewer.name : null);
+  console.log("In Appointment:", props.id, "with", props.interview);
+
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   const CANCEL = back;
 
@@ -32,12 +31,11 @@ export default function Appointment(props) {
    * @name {string} student name for appointment or null for delete.
    * @interviewer {numeric} interviewer number or null for delete
    */
-
   function checker(name, interviewer) {
     if (!props.interview) {
       save(name, interviewer);
     } else if (props.interview["student"] !== name || props.interview["interviewer"]["id"] !== interviewer) {
-      console.log("Edit:", props.name, props.interviewer, name, interviewer);
+      // console.log("Edit:", props.name, props.interviewer, name, interviewer);
       const interview = { student: name, interviewer};
 
       transition(SAVING);
@@ -47,7 +45,7 @@ export default function Appointment(props) {
         .then(value => (value === SHOW) ? transition(value, true) : transition(ERROR_SAVE, true))
         .catch(e => console.log("Error:", e));
     } else {
-      console.log("No change:", props.interview.student, props.interview.interviewer["id"], name, interviewer);
+      // console.log("No change:", props.interview.student, props.interview.interviewer["id"], name, interviewer);
 
       transition(SHOW, true);
     }
@@ -63,7 +61,7 @@ export default function Appointment(props) {
       .then(value => transition(value, true))
       .catch(e => console.log("Save Error:", e));
 
-    console.log("Finished @save", name, "and", interviewer);
+    // console.log("Finished @save", name, "and", interviewer);
   };
 
   function cancel() {
@@ -72,7 +70,7 @@ export default function Appointment(props) {
     status
       .then(value => transition(value, true))
       .catch(e => console.log("Cancel Error:", e));
-    console.log("Finished @edit");
+    // console.log("Finished @edit");
   };
   
   return (

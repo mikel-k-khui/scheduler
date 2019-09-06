@@ -8,16 +8,16 @@
 export function getAppointmentsForDay(state, day) {
   const matched = [];
   let appArray = state.days.filter(aDay =>  aDay.name === day);
+  
   if (appArray.length > 0) {
-    console.log("appArray", appArray);
     Object.keys(state.appointments).filter(app => {
-      if (appArray.includes(state.appointments[app]["id"])) {
+      if (appArray[0]["appointments"].includes(state.appointments[app]["id"])) {
         matched.push(state.appointments[app]);
       }
       return matched;
     });
   }
-  console.log(matched, "for", day);
+  // console.log(matched, "for", day);
   return matched;
 }
 
@@ -29,15 +29,14 @@ export function getAppointmentsForDay(state, day) {
  */
 export function getInterview(state, seekInterview) {
   let matched = {};
-  console.log("Before selector:", state, seekInterview);
   if (seekInterview) {
     if (state["interviewers"][seekInterview["interviewer"]]) {
         matched = {...seekInterview};
         matched["interviewer"]= state["interviewers"][seekInterview["interviewer"]];
       }
     }
-    console.log("In selector:", matched)
-  return matched;
+    // console.log("Get interviews:", matched, Object.keys(matched).length);
+  return (Object.keys(matched).length > 0 ? matched : null);
 }
 
 /**
@@ -60,5 +59,6 @@ export function getInterviewersForDay(state, day) {
       return matched;
     });
   }
+  // console.log("Interviewers:", matched);
   return matched;
 }

@@ -5,7 +5,7 @@ export default function Show(props) {
   const cancel = () => props.onDelete(props.toConfirm);
   const edit = () => props.onEdit(props.toForm);
 
-  console.log("On Show:", props.interview);
+  // console.log("On Show:", props.interviewer);
 
   return (
     <main className="appointment__card appointment__card--show">

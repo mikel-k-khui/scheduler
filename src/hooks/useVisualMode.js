@@ -11,15 +11,14 @@ export default function useVisualMode(initial) {
         if (replace) {
           newHistory = history.slice(0, history.length - 1);
           newHistory = [...newHistory, newMode];
-          console.log("Replaced", newHistory);
+          console.log("Replaced with", newHistory);
         }
         setMode(newMode);
-        console.log("transition", newHistory);
+        console.log("transition using", newHistory);
         return newHistory;
       });
     }
   };
-  // console.log("After transition", mode, "to", history[history.length - 1]);
 
   function back() {
     setHistory(() => {
@@ -31,15 +30,6 @@ export default function useVisualMode(initial) {
       console.log("back");
       return past;
     });
-    // if (history.length > 1) {
-    //   let past = history.slice(0, history.length - 1);
-    //   setHistory(past => {
-    //     setMode(history[history.length - 1]);
-    //     console.log("here:", history, "and", mode);
-    //     return past;
-    //   });
-    //   console.log("Inside:", history, "and", mode);
-    // }
   };
 
   return { mode, transition, back };
