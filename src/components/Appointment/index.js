@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 // import React, { Fragment } from "react";
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
@@ -22,7 +22,7 @@ const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
   console.log(props.id);
-  console.log(null || props.interview);
+  console.log(props.interview);
   // console.log(props.interview ? props.interview.interviewer.name : null);
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   const CANCEL = back;

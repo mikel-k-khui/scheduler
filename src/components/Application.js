@@ -8,10 +8,11 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors";
-import useApplicationData, { state, setDay, setDays, setAppointments, setInterviewer, bookInterview, cancelInterview } from "../hooks/useApplicationData";
+import useApplicationData from "../hooks/useApplicationData";
 
 export default function Application(props) {
   const {
+    stateR,
     state,
     setDay,
     bookInterview,
@@ -19,10 +20,11 @@ export default function Application(props) {
   } = useApplicationData();
 
   let appScript = '';
-  const interviewers = getInterviewersForDay(state, state.day);
-
-  appScript = getAppointmentsForDay(state, state.day).map(appointment => {
-    // console.log("Map app", appointment, state);
+  console.log("Before getInterviewers:", state, "and", stateR);
+  
+  const interviewers = getInterviewersForDay(state, stateR.day);
+  appScript = getAppointmentsForDay(state, stateR.day).map(appointment => {
+    console.log("Map app", appointment, stateR);
     return (<Appointment key={appointment.id}
       {...appointment}
       interview={getInterview(state, appointment.interview)}
@@ -44,7 +46,7 @@ export default function Application(props) {
         <nav className="sidebar__menu">
           <DayList
           days={state.days}
-          value={state.day}
+          value={stateR.day}
           onChange={setDay}
           />
         </nav>
@@ -56,7 +58,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {appScript}
-        <Appointment key="last" time="6pm" />
+        <Appointment key="last" time="5pm" />
       </section>
     </main>
   );

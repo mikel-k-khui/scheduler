@@ -9,7 +9,7 @@ export function getAppointmentsForDay(state, day) {
   const matched = [];
   let appArray = state.days.filter(aDay =>  aDay.name === day);
   if (appArray.length > 0) {
-    appArray = appArray[0]["appointments"]; 
+    console.log("appArray", appArray);
     Object.keys(state.appointments).filter(app => {
       if (appArray.includes(state.appointments[app]["id"])) {
         matched.push(state.appointments[app]);
@@ -17,6 +17,7 @@ export function getAppointmentsForDay(state, day) {
       return matched;
     });
   }
+  console.log(matched, "for", day);
   return matched;
 }
 
@@ -28,6 +29,7 @@ export function getAppointmentsForDay(state, day) {
  */
 export function getInterview(state, seekInterview) {
   let matched = {};
+  console.log("Before selector:", state, seekInterview);
   if (seekInterview) {
     if (state["interviewers"][seekInterview["interviewer"]]) {
         matched = {...seekInterview};

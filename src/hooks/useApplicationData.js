@@ -1,22 +1,47 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
 import "components/Application.scss";
 
 const queries = ['/api/days', '/api/appointments', '/api/interviewers'];
+const SET_DAY = "SET_DAY";
+// const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+// const SET_INTERVIEW = "SET_INTERVIEW";
 
 export default function useApplicationData(props) {
-  const [state, setState] = useState({
-    day: "Monday",
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case SET_DAY:
+        console.log(action.data);
+        return Object.assign({}, state, { day: action.day });
+      // case SET_APPLICATION_DATA:
+      //   return { /* insert logic */ }
+      // case SET_INTERVIEW: {
+      //   return /* insert logic */
+      // }
+      default:
+        throw new Error(
+          `Tried to reduce with unsupported action type: ${action.type}`
+        );
+    }
+  };
+  
+
+  const [ stateR, dispatch] = useReducer(reducer, { day: "Monday"});
+
+  const [ state, setState] = useState({
+    // day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
   });
   
-  const setDay = day => setState(prev => Object.assign({}, prev, { day }));
   const setDays = days => setState(prev => ({ ...prev, days}));
   const setAppointments = appointments => setState(prev => Object.assign({}, prev, { appointments }));
   const setInterviewer = interviewers => setState(prev => ({ ...prev, interviewers}));
+
+  const setDay = day => dispatch({type: "SET_DAY", day});
 
     //Add an interview to update Database
     function bookInterview(id, interview) {
@@ -49,15 +74,16 @@ export default function useApplicationData(props) {
     useEffect(() => {
       axios.all(queries.map(endPoint => axios.get(endPoint)))
         .then(axios.spread(function (daysData, appsData, intersData) {
-          // console.log("Days data:", daysData.data);
-          console.log("Appointments data:", appsData.data);
-          // console.log("Interviewer data:", intersData.data);
           setDays(daysData.data);
           setAppointments(appsData.data);
           setInterviewer(intersData.data);
+          // console.log("Days data:", daysData.data);
+          console.log("Appointments data:", appsData.data);
+          // console.log("Interviewer data:", intersData.data);
+
           }))
         .catch(e => console.log("error:", e));
     }, []);
 
-  return { state, setDay, setDays, setAppointments, setInterviewer, bookInterview, cancelInterview };
+  return { state, setDay, setDays, setAppointments, setInterviewer, bookInterview, cancelInterview, stateR, dispatch };
 }
