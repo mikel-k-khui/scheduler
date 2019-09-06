@@ -15,6 +15,7 @@ export default function FormData(props) {
     setName("");
     setInterviewer(null);
   };
+
   const save = () => props.onSave(name || props.student, interviewer || props.interviewer);
 
   console.log("On form - name:", name, "interviewer:", interviewer);
@@ -33,7 +34,7 @@ export default function FormData(props) {
           required="required"
         />
       </form>
-      <InterviewerList interviewers={props.interviewers} value={interviewer} onChange={setInterviewer} />
+      <InterviewerList interviewers={props.interviewers} value={interviewer || props.interviewer} onChange={setInterviewer} />
     </section>
     <section className="appointment__card-right">
       <section className="appointment__actions">

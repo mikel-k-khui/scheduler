@@ -34,16 +34,15 @@ export default function Appointment(props) {
   function checker(name, interviewer) {
     if (!props.interview) {
       save(name, interviewer);
-    } else if (props.interview["student"] !== name || props.interview["interviewer"]["id"] !== interviewer) {
-      // console.log("Edit:", props.name, props.interviewer, name, interviewer);
+    } else if (props.interview["student"] !== name || props.interview["interviewer"]["id"] !== interviewer["id"]) {
+      console.log("Edit:", props.interview.student, props.interview.interviewer, name, interviewer);
       const interview = { student: name, interviewer};
 
-      transition(SAVING);
+      transition(SAVING, true);
 
       let status = Promise.resolve(props.bookInterview(props.id, {...interview}));
       status
-        .then(value => (value === SHOW) ? transition(value, true) : transition(ERROR_SAVE, true))
-        .catch(e => console.log("Error:", e));
+        .then(value => (value === SHOW) ? transition(value, true) : transition(ERROR_SAVE, true));
     } else {
       // console.log("No change:", props.interview.student, props.interview.interviewer["id"], name, interviewer);
 
@@ -53,23 +52,20 @@ export default function Appointment(props) {
 
   function save(name, interviewer) {
     const interview = { student: name, interviewer};
+    console.log("@save", name, "and", interviewer);
 
     transition(SAVING, true);
 
     let status = Promise.resolve(props.bookInterview(props.id, {...interview}));
     status
-      .then(value => transition(value, true))
-      .catch(e => console.log("Save Error:", e));
-
-    // console.log("Finished @save", name, "and", interviewer);
+      .then(value => transition(value, true));
   };
 
   function cancel() {
     transition(DELETING, true);
     let status = Promise.resolve(props.cancelInterview(props.id));
     status
-      .then(value => transition(value, true))
-      .catch(e => console.log("Cancel Error:", e));
+      .then(value => transition(value, true));
     // console.log("Finished @edit");
   };
   
