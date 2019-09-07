@@ -39,7 +39,7 @@ export default function FormData(props) {
     <section className="appointment__card-right">
       <section className="appointment__actions">
         <Button danger onClick={cancel}>Cancel</Button>
-        <Button confirm onClick={save}>Save</Button>
+        <Button confirm disabled={!interviewer || !name} onClick={save}>Save</Button>
       </section>
     </section>
   </main>

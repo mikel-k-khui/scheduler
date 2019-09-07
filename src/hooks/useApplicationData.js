@@ -84,18 +84,30 @@ export default function useApplicationData(props) {
         .catch(e => "ERROR_DELETE");
     }
 
+    function delay(time, value) {
+      console.log("In delay", time, value);
+      return new Promise(function(resolve) { 
+          setTimeout( resolve(value), time);
+      });
+   }
+
     //initial setup of in-memory data
     useEffect(() => {
+      console.log("Before axios");
       axios.all(queries.map(endPoint => axios.get(endPoint)))
-        .then(function ([daysData, appsData, intersData]) {
+        .then(response => delay(30000, response))
+        .then(function ([daysData, ...rest]) {
+          console.log("Days data:", daysData.data);
           setDays(daysData.data);
+          return rest;
+          })
+        .then(response => delay(30000, response))
+        .then(function ([appsData, intersData]) {
+          console.log("Appointments data:", appsData.data);
+          console.log("Interviewer data:", intersData.data);
           setAppointments(appsData.data);
           setInterviewer(intersData.data);
-
-          // console.log("Days data:", daysData.data);
-          // console.log("Appointments data:", appsData.data);
-          // console.log("Interviewer data:", intersData.data);
-          })
+         })
         .catch(e => console.log("error:", e));
     }, []);
 

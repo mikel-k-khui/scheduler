@@ -18,35 +18,32 @@ export default function Application(props) {
     bookInterview,
     cancelInterview
   } = useApplicationData();
-  
+
+  function getRender() {
+    return getAppointmentsForDay(state, state.day).map(appointment => {
+      return (<Appointment key={appointment.id}
+        {...appointment}
+        interview={getInterview(state, appointment.interview)}
+        interviewers={interviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
+        />);
+    });
+  };
+
   let appScript = (<Status message={"Loading"} />);
   const interviewers = getInterviewersForDay(state, state.day);
 
-  if (state["days"].length !== 0 && Object.keys(state["interviewers"]).length > 0 &&
+    if (state["days"].length !== 0 && Object.keys(state["interviewers"]).length > 0 &&
     Object.keys(state["appointments"]).length > 0) {
+      console.log("Before getting Appointments:", state);
+      appScript = getRender();
+        //end of rendering logic
+      console.log("after map render logic", appScript);
+    }
 
-      let loading = new Promise((res, rej) => {
-        setTimeout(() => res(), 30000);
-        
-        loading
-          .then(() => {
-          console.log("Before getting Appointments:", state);
-            appScript = getAppointmentsForDay(state, state.day).map(appointment => {
-              return (<Appointment key={appointment.id}
-                {...appointment}
-                interview={getInterview(state, appointment.interview)}
-                interviewers={interviewers}
-                bookInterview={bookInterview}
-                cancelInterview={cancelInterview}
-                />);
-              });
-              //end of rendering logic
-            });
-        });
-      }
-      //end of if statement
-
-  return (
+  console.log("Before main", appScript);
+return (
     <main className="layout">
       <section className="sidebar">
         <img
