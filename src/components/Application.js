@@ -36,13 +36,13 @@ export default function Application(props) {
 
     if (state["days"].length !== 0 && Object.keys(state["interviewers"]).length > 0 &&
     Object.keys(state["appointments"]).length > 0) {
-      console.log("Before getting Appointments:", state);
+      // console.log("Before getting Appointments:", state);
       appScript = getRender();
         //end of rendering logic
-      console.log("after map render logic", appScript);
+      // console.log("after map render logic", appScript);
     }
 
-  console.log("Before main", appScript);
+  // console.log("Before main", appScript);
 return (
     <main className="layout">
       <section className="sidebar">

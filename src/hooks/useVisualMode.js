@@ -11,10 +11,10 @@ export default function useVisualMode(initial) {
         if (replace) {
           newHistory = history.slice(0, history.length - 1);
           newHistory = [...newHistory, newMode];
-          console.log("Replaced with", newHistory);
+          // console.log("Replaced with", newHistory);
         }
         setMode(newMode);
-        console.log("transition using", newHistory);
+        // console.log("transition using", newHistory);
         return newHistory;
       });
     }
@@ -27,7 +27,7 @@ export default function useVisualMode(initial) {
         past = history.slice(0, history.length - 1);
       }
       setMode(past[past.length - 1]);
-      console.log("back");
+      // console.log("back");
       return past;
     });
   };
