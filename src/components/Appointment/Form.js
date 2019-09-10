@@ -5,7 +5,7 @@ import Button from "../Button";
 export default function FormData(props) {
   const [name, setName] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState("Save button will be enabled with student name and interviewer filled in.Press 'Cancel' to return");
 
   const cancel = function() {
     reset();
@@ -19,8 +19,14 @@ export default function FormData(props) {
   };
 
   function validate() {
-    if (name === "") {
-      setError("Student name cannot be blank");
+    if (name === "" && interviewer === null) {
+      setError("Student name and interviewer cannot be blank");
+      return;
+    } else if (name === "") {
+      setError("Student name");
+      return;
+    } else if (interviewer === null) {
+      setError("Interviewer cannot be blank");
       return;
     }
     setError("");
@@ -50,7 +56,7 @@ export default function FormData(props) {
     <section className="appointment__card-right">
       <section className="appointment__actions">
         <Button danger onClick={cancel}>Cancel</Button>
-        <Button confirm disable={!interviewer} onClick={validate}>Save</Button>
+        <Button confirm disabled={!interviewer} onClick={validate}>Save</Button>
       </section>
     </section>
   </main>
