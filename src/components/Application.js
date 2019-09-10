@@ -45,7 +45,7 @@ export default function Application(props) {
   // console.log("Before main", appScript);
 return (
     <main className="layout">
-      <section className="sidebar">
+      <section className="sidebar" >
         <img
           className="sidebar--centered"
           src="images/logo.png"

@@ -21,7 +21,7 @@ const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
-  console.log("In Appointment:", props.id, "with", props.interview);
+  // console.log("In Appointment:", props.id, "with", props.interview);
 
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   const CANCEL = back;
@@ -33,10 +33,10 @@ export default function Appointment(props) {
    */
   function checker(name, interviewer) {
     if (!props.interview) {
-      save(name, interviewer);
+      save(name, interviewer["id"]);
     } else if (props.interview["student"] !== name || props.interview["interviewer"]["id"] !== interviewer["id"]) {
-      console.log("Edit:", props.interview.student, props.interview.interviewer, name, interviewer);
-      const interview = { student: name, interviewer};
+      // console.log("Edit:", props.interview.student, props.interview.interviewer, name, interviewer);
+      const interview = { student: name, interviewer: interviewer["id"]};
 
       transition(SAVING, true);
 
@@ -52,7 +52,7 @@ export default function Appointment(props) {
 
   function save(name, interviewer) {
     const interview = { student: name, interviewer};
-    console.log("@save", name, "and", interviewer);
+    // console.log("@save", name, "and", interviewer);
 
     transition(SAVING, true);
 
@@ -70,7 +70,7 @@ export default function Appointment(props) {
   };
   
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header
       time={props.time}
       />
@@ -81,7 +81,7 @@ export default function Appointment(props) {
       {mode === ERROR_DELETE && <Error message={"Could not delete appointment."} onClose={CANCEL}/>}
       {mode === ERROR_SAVE && <Error message={"Could not save appointment."} onClose={CANCEL}/>}
       {mode === SAVING && <Status message={"Saving"} />}
-      {mode === SHOW && <Show student={props.interview.student} interviewer={props.interview.interviewer} onDelete={transition} toConfirm={CONFIRM}
+      {mode === SHOW && <Show student={props.interview ? props.interview.student : null} interviewer={props.interview ? props.interview.interviewer : null} onDelete={transition} toConfirm={CONFIRM}
       onEdit={transition} toForm={CREATE} />}
     </article>    );
 }

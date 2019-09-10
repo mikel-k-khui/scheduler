@@ -9,7 +9,7 @@ const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_SPOTS = "SET_SPOTS";
 
 function reducer(state, {type, ...payload}) {
-  console.log("In Reducer: adding", payload, "to", state);
+  // console.log("In Reducer: adding", payload, "to", state);
   switch (type) {
     case SET_DAY:
       return Object.assign({}, state, { day: payload.day});
@@ -28,7 +28,7 @@ function reducer(state, {type, ...payload}) {
         const newSpots = Number(days[pos]["spots"]) + Number(change);
         day = {...day, spots: newSpots};
         days = [...days.slice(0, pos), day, ...days.slice(pos+1, days.length)]; 
-        // console.log("Target change", days, "and", day, newSpots);
+        // console.log("Target change", days, "\nand", day, newSpots);
       }
       return Object.assign({}, state, { days });
 
@@ -55,7 +55,7 @@ export default function useApplicationData(props) {
   function bookInterview(id, interview) {
     const change = (state.appointments[id]["interview"] === null ? -1 : 0);
 
-    console.log("Check if null", interview, "to add->", id, "to", state.appointments, "for", change);
+    // console.log("Check if null", interview, "to add->", id, "to", state.appointments, "for", change);
 
     const appointment = {...state.appointments[id], interview: { ...interview }};
     const appointments = {...state.appointments, [id]: appointment};
@@ -65,6 +65,7 @@ export default function useApplicationData(props) {
       .then(res => {
         setAppointments(appointments);
         setSpots( id, change);
+        // console.log("Added successuflly in put");
         return Promise.resolve("SHOW"); 
       })
       .catch(e => "ERROR_SAVE");
@@ -85,7 +86,7 @@ export default function useApplicationData(props) {
     }
 
     function delay(time, value) {
-      console.log("In delay", time, value);
+      // console.log("In delay", time, value);
       return new Promise(function(resolve) { 
           setTimeout( resolve(value), time);
       });
@@ -93,20 +94,21 @@ export default function useApplicationData(props) {
 
     //initial setup of in-memory data
     useEffect(() => {
-      console.log("Before axios");
+      // console.log("Before axios");
       axios.all(queries.map(endPoint => axios.get(endPoint)))
-        .then(response => delay(30000, response))
+        // .then(response => delay(30000, response))
         .then(function ([daysData, ...rest]) {
-          console.log("Days data:", daysData.data);
+          // console.log("Days data:", daysData.data);
           setDays(daysData.data);
           return rest;
           })
-        .then(response => delay(30000, response))
+        // .then(response => delay(30000, response))
         .then(function ([appsData, intersData]) {
-          console.log("Appointments data:", appsData.data);
-          console.log("Interviewer data:", intersData.data);
+          // console.log("Appointments data:", appsData.data);
+          // console.log("Interviewer data:", intersData.data);
           setAppointments(appsData.data);
           setInterviewer(intersData.data);
+          // console.log("End of axios:", state);
          })
         .catch(e => console.log("error:", e));
     }, []);

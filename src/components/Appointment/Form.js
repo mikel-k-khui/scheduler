@@ -25,10 +25,10 @@ export default function FormData(props) {
     }
     setError("");
 
-    props.onSave(name, interviewer["id"]);
+    props.onSave(name, interviewer);
   };
 
-  console.log("On form - name:", props.student, "interviewer:", interviewer, "and error:", error);
+  // console.log("On form - name:", props.student, "interviewer:", interviewer, "and error:", error);
   
   return (
   <main className="appointment__card appointment__card--create">
