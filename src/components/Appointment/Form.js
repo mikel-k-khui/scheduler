@@ -5,7 +5,7 @@ import Button from "../Button";
 export default function FormData(props) {
   const [name, setName] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
-  const [error, setError] = useState("Save button will be enabled with interviewer selected in.Press 'Cancel' to return");
+  const [error, setError] = useState("Save button will be enabled with interviewer selected in. Press 'Cancel' to return.");
 
    /**
    * Cancel in progress booking: clear all inputted data and return to EMPTY
@@ -21,7 +21,7 @@ export default function FormData(props) {
   const reset = function() {
     setName("");
     setInterviewer(null);
-    setError("Save button will be enabled with interviewer selected in.Press 'Cancel' to return");
+    setError("Save button will be enabled with interviewer selected in. Press 'Cancel' to return.");
   };
 
    /**
@@ -30,13 +30,13 @@ export default function FormData(props) {
    */  
   function validate() {
     if (name === "" && interviewer === null) {
-      setError("Student name and interviewer cannot be blank");
+      setError("Student name and interviewer cannot be blank.");
       return;
     } else if (name === "") {
-      setError("Student name cannot be blank");
+      setError("Student name cannot be blank.");
       return;
     } else if (interviewer === null) {
-      setError("Interviewer cannot be blank");
+      setError("Interviewer cannot be blank.");
       return;
     }
     setError("");
