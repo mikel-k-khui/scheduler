@@ -1,5 +1,5 @@
 # Interview Scheduler
-—time is a precious commodity for Lighthouse Labbers.  Optimize your time with our scheduler.
+—time is a precious commodity. Labbers optimize our time with the scheduler.
 
 *Better match your time to LHL tech mentor availabilities*
 
@@ -11,40 +11,41 @@ Key features:
 2) A weekly view of appointment availabilities with daily mentors available.
 3) Utilize React reducers to efficiently manage multiple states to simulate complex API queries.
 
-### Mobile View
-
-#### Loading Page Waiting for Server Data
+### Loading Page Waiting for Server Data
 !["Loading Page Waiting For Server Data"](./docs/00_Loading.png)
 
-#### Button Visuals On Different States
+### Button Visuals On Different States
 !["Button Visuals On Different States"](./docs/00_Buttons.png)
 
-#### Existing Appointment's Visuals On Different States
+### Existing Appointment's Visuals On Different States
 !["Existing Appointment's Visuals On Different States"](./docs/00_Appt_Buttons.png)
 
-#### Startup Screen
+### Startup Screen
 !["Startup Screen"](./docs/01_Startup_Screen.png)
 
-#### Loading Page Waiting for Server Data
+### Loading Page Waiting for Server Data
 !["Loading Page Waiting For Server Data"](./docs/02_Edit_Screen.png)
 
-#### Form Screen To Edit An Existing Appointment
+### Form Screen To Edit An Existing Appointment
 !["Form Screen To Edit An Existing Appointment"](./docs/03_Add_New.png)
 0
-#### Form To Sign-up For An Appointment
+### Form To Sign-up For An Appointment
 !["Form To Sign-up For An Appointment"](./docs/04_Form_Screen.png)
 
-#### Status Page Awaiting For Server Respond
+### Status Page Awaiting For Server Respond
 !["Status Page Awaiting For Server Respond"](./docs/05_Confirmation.png)
 
-#### Server Error Editing An Appointment
+### Server Error Editing An Appointment
 !["Server Error Editing An Appointment"](./docs/07b_Edit_Error.png)
 
-#### Awaiting For Server Response on Deleting An Appointment
+### Awaiting For Server Response on Deleting An Appointment
 !["Awaiting For Server Response on Deleting An Appointment"](./docs/06a_Deleting_Status.png)
 
-#### Server Error Deleting An Appointment
+### Server Error Deleting An Appointment
 !["Server Error Deleting An Appointment"](./docs/06b_Error_Deleting.png)
+
+### Mobile View
+!["Mobile View"](./docs/08_mobile_view.png)
 
 ## Built With
 
