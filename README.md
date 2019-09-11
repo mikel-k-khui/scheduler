@@ -1,7 +1,7 @@
-# Smart To-do list
-**Interview Scheduler**—time is a precious commodity especially during web development bootcamp.
+# Interview Scheduler
+—time is a precious commodity for Lighthouse Labbers.  Optimize your time with our scheduler.
 
-*Better match your time with our tech mentor availabilities*
+*Better match your time to LHL tech mentor availabilities*
 
 ## Final Product
 
