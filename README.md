@@ -104,7 +104,7 @@ npm start
 npm start
 ```
 
-## Running the tests
+## Running The Tests
 
 
 ### Installation Of Testing Servers
@@ -127,7 +127,7 @@ npm run storybook
 npm run cypress
 ```
 
-### Break down into end to end tests
+### Break Down Into End To End Tests
 
 The End-to-End Testing activity tests the three main functionalities:
 
@@ -146,7 +146,7 @@ Test includes:
 * Checks successful booking (i.e. PUT) using should and find function (i.e. .should.expect) the apppintment's student name exists.
 * Check the available spot(s) reduced by 1 to check the spots remaining functionality worked.
 
-#### Editin
+#### Editing
 
 1. Clicks the edit button for an existing appointment
 2. Changes the student's name and select a different interviewer
@@ -184,7 +184,7 @@ cy.contains("[data-testid=day]", "Monday")
 
 ## Contributing
 
-As this is a student project there is currently no process for submitting pull requests.
+There is currently no process for submitting pull requests to this student project.
 
 ## Versioning
 
