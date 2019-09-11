@@ -9,10 +9,12 @@ export default function InterviewerList(props) {
     
   const items = props.interviewers.map(interviewer => {
 
-    // InterviewerList.propTypes = {
-    //   value: PropTypes.number,
-    //   onChange: PropTypes.func.isRequired
-    // };
+    /* Set proptypes epected interviewer list
+    */
+    InterviewerList.propTypes = {
+      value: PropTypes.number,
+      onChange: PropTypes.func.isRequired
+    };
   
     return (
     <InterviewerListItem 

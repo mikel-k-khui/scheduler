@@ -5,25 +5,35 @@ import Button from "../Button";
 export default function FormData(props) {
   const [name, setName] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
-  const [error, setError] = useState("Save button will be enabled with student name and interviewer filled in.Press 'Cancel' to return");
+  const [error, setError] = useState("Save button will be enabled with interviewer selected in.Press 'Cancel' to return");
 
+   /**
+   * Cancel in progress booking: clear all inputted data and return to EMPTY
+   */
   const cancel = function() {
     reset();
     props.onCancel();
   };
-  
+
+   /**
+   * Clear all inputted data and return to EMPTY
+   */
   const reset = function() {
     setName("");
     setInterviewer(null);
-    setError("");
+    setError("Save button will be enabled with interviewer selected in.Press 'Cancel' to return");
   };
 
+   /**
+   * Confirm student name is not null
+   * Additional checks for interviewer is selected; Save button disabled if interviewer is not selected
+   */  
   function validate() {
     if (name === "" && interviewer === null) {
       setError("Student name and interviewer cannot be blank");
       return;
     } else if (name === "") {
-      setError("Student name");
+      setError("Student name cannot be blank");
       return;
     } else if (interviewer === null) {
       setError("Interviewer cannot be blank");
@@ -33,8 +43,6 @@ export default function FormData(props) {
 
     props.onSave(name, interviewer);
   };
-
-  // console.log("On form - name:", props.student, "interviewer:", interviewer, "and error:", error);
   
   return (
   <main className="appointment__card appointment__card--create">

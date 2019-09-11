@@ -19,6 +19,10 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
 
+    /**
+   * Render a list of Appointment DOMs
+   * @return [<Appointment />]
+   */
   function getRender() {
     return getAppointmentsForDay(state, state.day).map(appointment => {
       return (<Appointment key={appointment.id}
@@ -34,41 +38,41 @@ export default function Application(props) {
   let appScript = (<Status message={"Loading"} />);
   const interviewers = getInterviewersForDay(state, state.day);
 
-    if (state["days"].length !== 0 && Object.keys(state["interviewers"]).length > 0 &&
+  /**
+   * Check all data are loaded before rendering Appointment DOMs
+   * @return
+   */
+  if (state["days"].length !== 0 && Object.keys(state["interviewers"]).length > 0 &&
     Object.keys(state["appointments"]).length > 0) {
-      // console.log("Before getting Appointments:", state);
       appScript = getRender();
-        //end of rendering logic
-      // console.log("after map render logic", appScript);
-    }
+  }
 
-  // console.log("Before main", appScript);
-return (
-    <main className="layout">
-      <section className="sidebar" >
-        <img
-          className="sidebar--centered"
-          src="images/logo.png"
-          alt="Interview Scheduler"
-        />
-        <hr className="sidebar__separator sidebar--centered" />
-        <nav className="sidebar__menu">
-          <DayList
-          days={state.days}
-          value={state.day}
-          onChange={setDay}
+  return (
+      <main className="layout">
+        <section className="sidebar" >
+          <img
+            className="sidebar--centered"
+            src="images/logo.png"
+            alt="Interview Scheduler"
           />
-        </nav>
-        <img
-          className="sidebar__lhl sidebar--centered"
-          src="images/lhl.png"
-          alt="Lighthouse Labs"
-        />
-      </section>
-      <section className="schedule">
-        {appScript}
-        <Appointment key="last" time="5pm" />
-      </section>
-    </main>
-  );
+          <hr className="sidebar__separator sidebar--centered" />
+          <nav className="sidebar__menu">
+            <DayList
+            days={state.days}
+            value={state.day}
+            onChange={setDay}
+            />
+          </nav>
+          <img
+            className="sidebar__lhl sidebar--centered"
+            src="images/lhl.png"
+            alt="Lighthouse Labs"
+          />
+        </section>
+        <section className="schedule">
+          {appScript}
+          <Appointment key="last" time="5pm" />
+        </section>
+      </main>
+    );
 }

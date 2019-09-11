@@ -4,6 +4,12 @@ export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
+   /**
+   * Create mode and replace mode
+   * @newMode {String}
+   * @replace {Boolean} - optional
+   * @return {Array}
+   */
   function transition(newMode, replace = false) {
     if (history[history.length - 1] !== newMode) {
       setHistory(() => {
@@ -11,15 +17,17 @@ export default function useVisualMode(initial) {
         if (replace) {
           newHistory = history.slice(0, history.length - 1);
           newHistory = [...newHistory, newMode];
-          // console.log("Replaced with", newHistory);
         }
         setMode(newMode);
-        // console.log("transition using", newHistory);
         return newHistory;
       });
     }
   };
 
+   /**
+   * Copy history, pop the last item and replace history immutably
+   * @return {Array}
+   */
   function back() {
     setHistory(() => {
       let past = history.slice();
@@ -27,7 +35,6 @@ export default function useVisualMode(initial) {
         past = history.slice(0, history.length - 1);
       }
       setMode(past[past.length - 1]);
-      // console.log("back");
       return past;
     });
   };

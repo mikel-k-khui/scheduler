@@ -21,13 +21,12 @@ const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
-  // console.log("In Appointment:", props.id, "with", props.interview);
-
+  //ascertain if the DOM should be set as SHOW or EMPTY
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   const CANCEL = back;
 
     /**
-   * Function to funnel the information from components
+   * Function to funnel the information from FORM to add, edit, or no change
    * @name {string} student name for appointment or null for delete.
    * @interviewer {numeric} interviewer number or null for delete
    */
@@ -35,7 +34,6 @@ export default function Appointment(props) {
     if (!props.interview) {
       save(name, interviewer["id"]);
     } else if (props.interview["student"] !== name || props.interview["interviewer"]["id"] !== interviewer["id"]) {
-      // console.log("Edit:", props.interview.student, props.interview.interviewer, name, interviewer);
       const interview = { student: name, interviewer: interviewer["id"]};
 
       transition(SAVING, true);
@@ -44,16 +42,17 @@ export default function Appointment(props) {
       status
         .then(value => (value === SHOW) ? transition(value, true) : transition(ERROR_SAVE, true));
     } else {
-      // console.log("No change:", props.interview.student, props.interview.interviewer["id"], name, interviewer);
-
       transition(SHOW, true);
     }
   };
 
+  /**
+   * Add a booking
+   * @name {string} student name for appointment or null for delete.
+   * @interviewer {numeric} interviewer number or null for delete
+   */
   function save(name, interviewer) {
     const interview = { student: name, interviewer};
-    // console.log("@save", name, "and", interviewer);
-
     transition(SAVING, true);
 
     let status = Promise.resolve(props.bookInterview(props.id, {...interview}));
@@ -61,12 +60,16 @@ export default function Appointment(props) {
       .then(value => transition(value, true));
   };
 
+    /**
+   * Cancel a booking
+   * @name {string} student name for appointment or null for delete.
+   * @interviewer {numeric} interviewer number or null for delete
+   */
   function cancel() {
     transition(DELETING, true);
     let status = Promise.resolve(props.cancelInterview(props.id));
     status
       .then(value => transition(value, true));
-    // console.log("Finished @edit");
   };
   
   return (
