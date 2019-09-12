@@ -3,6 +3,10 @@
 # .env
 .env.development
 
+#circleci
+circleci_rsa
+circleci_rsa.pub
+
 # dependencies
 /node_modules
 /.pnp

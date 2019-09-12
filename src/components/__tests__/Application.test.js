@@ -198,7 +198,7 @@ describe("Application", () => {
     const spots = getByText(day, "no spots remaining");
     
     expect(spots).toBeInTheDocument();
-    // console.log("Spots remaining:", prettyDOM(spots));
+    console.log("Spots remaining:", prettyDOM(spots));
     // debug();
   });
 
