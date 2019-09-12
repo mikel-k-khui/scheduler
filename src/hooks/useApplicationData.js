@@ -30,7 +30,7 @@ export default function useApplicationData(props) {
     const appointments = {...state.appointments, [id]: appointment};
 
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, {"interview": interview } )
+      .put(`/api/appointments/${id}`, {"interview": interview } )
       .then(res => {
         setAppointments(appointments);
         setSpots( id, change);
@@ -49,7 +49,7 @@ export default function useApplicationData(props) {
     const appointments = {...state.appointments, [id]: appointment};
 
     return axios
-      .delete(`http://localhost:8001/api/appointments/${id}`, {"interview": null} )
+      .delete(`/api/appointments/${id}`, {"interview": null} )
       .then(res => {
         setAppointments(appointments);
         setSpots( id, 1);
